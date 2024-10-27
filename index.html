@@ -1,13 +1,29 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/jpg" href="/public/snakegame.jpg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
+    <link rel="stylesheet" href="style.css" />
+    <title>Snake Game</title>
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="/main.js"></script>
+    <main>
+      <h3>--: Retro Snake Game :--</h3>
+      <div class="score-panel">
+        <div id="score">Score: 888</div>
+        <!-- <div id="highScore">High Score: 8000</div> -->
+      </div>
+      <div class="board-container">
+        <div class="board-border">
+          <div class="game-board-grid"></div>
+        </div>
+        <div class="starter-screen">
+          <img src="/public/snake-game-ai-gen.png" alt="" class="logo" />
+          <h4 class="info">Press Spacebar To Start The Game</h4>
+        </div>
+      </div>
+    </main>
+    <script type="module" src="/script.js"></script>
   </body>
 </html>
