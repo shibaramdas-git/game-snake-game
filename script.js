@@ -52,7 +52,45 @@ function generateFood() {
   return { x, y };
 }
 
-// Move the snake
+// Handle keypress event (MAIN FUNCTION)
+function handleKeyPress(event) {
+  if (
+    (gameStarted === false && event.code == "Space") ||
+    (gameStarted === false && event.key === " ")
+  ) {
+    startGame();
+  } else {
+    switch (event.key) {
+      case "ArrowUp":
+        direction = "up";
+        break;
+      case "ArrowDown":
+        direction = "down";
+        break;
+      case "ArrowRight":
+        direction = "right";
+        break;
+      case "ArrowLeft":
+        direction = "left";
+        break;
+    }
+  }
+}
+
+document.addEventListener("keydown", handleKeyPress);
+
+// Start the game
+function startGame() {
+  gameStarted = true;
+  starterScreen.style.display = "none";
+  gameInterval = setInterval(() => {
+    draw();
+    move();
+    checkCollision();
+  }, gameSpeedDelay);
+}
+
+// Move the snake (MAIN FUNCTION)
 function move() {
   let head = { ...snake[0] }; //Accessing the head of snake
   switch (direction) {
@@ -81,6 +119,7 @@ function move() {
     gameInterval = setInterval(() => {
       draw();
       move();
+      checkCollision();
     }, gameSpeedDelay);
   } else {
     snake.pop();
@@ -91,44 +130,6 @@ function move() {
 //   draw();
 //   move();
 // }, 200);
-
-// Start the game
-function startGame() {
-  gameStarted = true;
-  starterScreen.style.display = "none";
-  gameInterval = setInterval(() => {
-    draw();
-    move();
-    chechkCollision();
-  }, gameSpeedDelay);
-}
-
-// Handle keypress event
-function handleKeyPress(event) {
-  if (
-    (gameStarted === false && event.code == "Space") ||
-    (gameStarted === false && event.key === " ")
-  ) {
-    startGame();
-  } else {
-    switch (event.key) {
-      case "ArrowUp":
-        direction = "up";
-        break;
-      case "ArrowDown":
-        direction = "down";
-        break;
-      case "ArrowRight":
-        direction = "right";
-        break;
-      case "ArrowLeft":
-        direction = "left";
-        break;
-    }
-  }
-}
-
-document.addEventListener("keydown", handleKeyPress);
 
 // Lets increase speed on every food
 function increaseSpeed(speed) {
@@ -146,7 +147,24 @@ function increaseSpeed(speed) {
 }
 
 // Chechk collision with walls and snakes body itself
-function chechkCollision() {
+function checkCollision() {
   let head = snake[0];
-  console.log(head);
+  if (head.x < 1 || head.x > gridSize || head.y < 1 || head.y > gridSize) {
+    console.log("out");
+    resetGame();
+  }
+}
+
+function resetGame() {
+  stopGame();
+  snake = [{ x: 10, y: 10 }];
+  food = generateFood();
+  direction = "right";
+  gameSpeedDelay = 200;
+}
+// Opposite of startGame();
+function stopGame() {
+  gameStarted = false;
+  starterScreen.style.display = "block";
+  clearInterval(gameInterval);
 }
