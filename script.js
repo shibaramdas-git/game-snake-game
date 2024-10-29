@@ -1,23 +1,24 @@
+// HTML elements
 const board = document.getElementById("game-board");
 const starterScreen = document.querySelector(".starter-screen");
 
 // Variables
-let snake = [
-  { x: 10, y: 10 },
-  { x: 9, y: 10 },
-];
+const gridSize = 20;
+let snake = [{ x: 10, y: 10 }];
 let food = generateFood();
 let direction = "right";
 let gameStarted = false;
+let gameSpeedDelay = 200;
+let gameInterval;
 
-// Draww game map, snake, food
-function Draw() {
+// draww game map, snake, food
+function draw() {
   board.innerHTML = "";
-  DrawSnake();
-  DrawFood();
+  drawSnake();
+  drawFood();
 }
-// Draw snake
-function DrawSnake() {
+// draw snake
+function drawSnake() {
   snake.forEach((segment) => {
     //create snake element
     const snakeElement = createChildElement("div", "snake");
@@ -26,8 +27,8 @@ function DrawSnake() {
     board.appendChild(snakeElement);
   });
 }
-// Draw food
-function DrawFood() {
+// draw food
+function drawFood() {
   const foodElement = createChildElement("div", "food");
   setPosition(foodElement, food);
   board.appendChild(foodElement);
@@ -46,8 +47,8 @@ function createChildElement(tag, className) {
   return element;
 }
 function generateFood() {
-  const x = Math.floor(Math.random() * 20) + 1;
-  const y = Math.floor(Math.random() * 20) + 1;
+  const x = Math.floor(Math.random() * gridSize) + 1;
+  const y = Math.floor(Math.random() * gridSize) + 1;
   return { x, y };
 }
 
@@ -61,53 +62,91 @@ function move() {
     case "left":
       head.x--;
       break;
-
     case "up":
       head.y--;
       break;
-
     case "down":
       head.y++;
       break;
   }
+
+  snake.unshift(head);
+
+  // snake.pop();
+
+  if (head.x === food.x && head.y === food.y) {
+    food = generateFood();
+    gameSpeedDelay = increaseSpeed(gameSpeedDelay);
+    clearInterval(gameInterval); //To start new interval with new speed
+    gameInterval = setInterval(() => {
+      draw();
+      move();
+    }, gameSpeedDelay);
+  } else {
+    snake.pop();
+  }
 }
-setInterval(() => {
-  Draw();
-  move();
-}, 200);
+
+// setInterval(() => {
+//   draw();
+//   move();
+// }, 200);
 
 // Start the game
-// function startGame() {
-//   gameStarted = true;
-//   starterScreen.style.display = "none";
-//   Draw();
-//   let gameInterval = setInterval(() => {
-//     move();
-//   }, 800);
-// }
+function startGame() {
+  gameStarted = true;
+  starterScreen.style.display = "none";
+  gameInterval = setInterval(() => {
+    draw();
+    move();
+    chechkCollision();
+  }, gameSpeedDelay);
+}
 
 // Handle keypress event
-// function handleKeyPress(event) {
-//   if (
-//     (gameStarted === false && event.code == "Space") ||
-//     (gameStarted === false && event.key === " ")
-//   ) {
-//     startGame();
-//   } else {
-//     switch (event.key) {
-//       case "ArrowUp":
-//         direction = "up";
-//         break;
-//       case "ArrowDown":
-//         direction = "down";
-//         break;
-//       case "ArrowRight":
-//         direction = "right";
-//         break;
-//       case "ArrowLeft":
-//         direction = "left";
-//         break;
-//     }
-//   }
-// }
-// document.addEventListener("keydown", handleKeyPress);
+function handleKeyPress(event) {
+  if (
+    (gameStarted === false && event.code == "Space") ||
+    (gameStarted === false && event.key === " ")
+  ) {
+    startGame();
+  } else {
+    switch (event.key) {
+      case "ArrowUp":
+        direction = "up";
+        break;
+      case "ArrowDown":
+        direction = "down";
+        break;
+      case "ArrowRight":
+        direction = "right";
+        break;
+      case "ArrowLeft":
+        direction = "left";
+        break;
+    }
+  }
+}
+
+document.addEventListener("keydown", handleKeyPress);
+
+// Lets increase speed on every food
+function increaseSpeed(speed) {
+  console.log(speed);
+  if (speed > 150) {
+    speed -= 5;
+  } else if (gameSpeedDelay > 100) {
+    speed -= 3;
+  } else if (gameSpeedDelay > 50) {
+    speed -= 2;
+  } else if (gameSpeedDelay > 25) {
+    speed -= 1;
+  }
+  return speed;
+}
+
+// Chechk collision with walls and snakes body itself
+function chechkCollision() {
+  let head = snake[0];
+  console.log(head);
+}
