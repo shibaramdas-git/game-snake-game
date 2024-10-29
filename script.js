@@ -133,7 +133,7 @@ function move() {
 
 // Lets increase speed on every food
 function increaseSpeed(speed) {
-  console.log(speed);
+  // console.log(speed);
   if (speed > 150) {
     speed -= 5;
   } else if (gameSpeedDelay > 100) {
@@ -149,9 +149,18 @@ function increaseSpeed(speed) {
 // Chechk collision with walls and snakes body itself
 function checkCollision() {
   let head = snake[0];
+  //Check for boundary
   if (head.x < 1 || head.x > gridSize || head.y < 1 || head.y > gridSize) {
     console.log("out");
     resetGame();
+  }
+
+  //Check for its body
+  for (let i = 1; i < snake.length; i++) {
+    if (head.x === snake[i].x && head.y === snake[i].y) {
+      resetGame();
+      console.log("out");
+    }
   }
 }
 
