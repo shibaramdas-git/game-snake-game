@@ -1,6 +1,8 @@
 // HTML elements
 const board = document.getElementById("game-board");
 const starterScreen = document.querySelector(".starter-screen");
+const scoreEle = document.querySelector("#score");
+const highScoreEle = document.querySelector("#highScore");
 
 // Variables
 const gridSize = 20;
@@ -10,12 +12,14 @@ let direction = "right";
 let gameStarted = false;
 let gameSpeedDelay = 200;
 let gameInterval;
+let highScore = 0;
 
 // draww game map, snake, food
 function draw() {
   board.innerHTML = "";
   drawSnake();
   drawFood();
+  updateScore();
 }
 // draw snake
 function drawSnake() {
@@ -146,7 +150,7 @@ function increaseSpeed(speed) {
   return speed;
 }
 
-// Chechk collision with walls and snakes body itself
+// Check collision with walls and snakes body itself
 function checkCollision() {
   let head = snake[0];
   //Check for boundary
@@ -165,15 +169,33 @@ function checkCollision() {
 }
 
 function resetGame() {
+  updateHighScore();
   stopGame();
   snake = [{ x: 10, y: 10 }];
   food = generateFood();
   direction = "right";
   gameSpeedDelay = 200;
+  updateScore();
 }
 // Opposite of startGame();
 function stopGame() {
   gameStarted = false;
   starterScreen.style.display = "block";
   clearInterval(gameInterval);
+  board.innerHTML = ""; //Removes snake & food after game over
+}
+
+function updateScore() {
+  let currentScore = snake.length - 1;
+  scoreEle.textContent = `Score: ${currentScore.toString().padStart(3, "0")}`;
+}
+function updateHighScore() {
+  let currentScore = snake.length - 1;
+  if (currentScore > highScore) {
+    highScore = currentScore;
+    highScoreEle.textContent = `High Score: ${highScore
+      .toString()
+      .padStart(3, "0")}`;
+  }
+  highScoreEle.style.display = "block";
 }

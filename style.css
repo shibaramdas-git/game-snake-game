@@ -70,3 +70,7 @@ main {
   border: 1px solid #000;
   background: var(--food-color);
 }
+
+#highScore {
+  display: none;
+}
