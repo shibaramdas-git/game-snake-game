@@ -9,20 +9,28 @@
   </head>
   <body>
     <main>
-      <!-- <h3>--: Retro Snake Game :--</h3> -->
-      <div class="score-panel">
+      <h3>--: Retro Snake Game :--</h3>
+      <section class="score-panel" aria-label="Game scores">
         <div id="score">Score: 000</div>
         <div id="highScore">High Score: 000</div>
-      </div>
-      <div class="board-container">
+      </section>
+      <section class="board-container">
         <div class="board-border">
-          <div class="game-board-grid" id="game-board"></div>
+          <div
+            class="game-board-grid"
+            id="game-board"
+            aria-label="Game board"
+          ></div>
         </div>
-        <div class="starter-screen">
-          <img src="/public/snake-game-ai-gen.png" alt="" class="logo" />
+        <div class="starter-screen" aria-hidden="true">
+          <img
+            src="/public/snake-game-ai-gen.png"
+            alt="Snake game logo"
+            class="logo"
+          />
           <h4 class="info">Press Spacebar To Start The Game</h4>
         </div>
-      </div>
+      </section>
     </main>
     <script type="module" src="/script.js"></script>
   </body>

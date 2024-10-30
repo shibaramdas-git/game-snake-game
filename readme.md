@@ -15,6 +15,6 @@
 
 Changes from game-v1
 
-1. dfdf
+1. HTML- added aria-label for accessibility, used section tag and meaning ful alt tag for img.
 2. dfdf
 3. dfdf
