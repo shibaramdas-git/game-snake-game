@@ -1,11 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
 
 :root {
-  --bg-color: rgb(83, 83, 83);
-  --font-body-color: rgb(0, 0, 0);
+  --bg-color: #535353;
+  --font-color: #000000;
   --snake-color: green;
   --food-color: red;
-  --playground-color: rgb(184, 213, 174);
+  --playground-color: #b8d5ae;
+  --border-color: #105210;
+  --grid-size: 20;
 }
 *,
 *::after,
@@ -19,6 +21,10 @@ body {
   font-family: "VT323", monospace;
   font-size: 28px;
 }
+h3 {
+  color: rgb(184, 213, 174);
+  font-weight: normal;
+}
 
 main {
   display: flex;
@@ -27,6 +33,7 @@ main {
   align-items: center;
   height: 100vh;
 }
+
 .score-panel {
   display: flex;
   justify-content: space-between;
@@ -42,13 +49,13 @@ main {
   background: rgb(184, 213, 174);
 }
 .board-container {
-  border: 8px solid rgb(184, 213, 174);
+  border: 8px solid #b8d5ae;
   border-radius: 10px;
-  box-shadow: inset 0 0 0 10px rgb(184, 213, 174);
+  box-shadow: inset 0 0 0 10px #b8d5ae;
   position: relative;
 }
 .board-border {
-  border: 26px solid rgb(16, 82, 16);
+  border: 26px solid #105210;
   border-radius: 10px;
 }
 .starter-screen {
