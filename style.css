@@ -2,13 +2,15 @@
 
 :root {
   --bg-color: #535353;
-  --font-color: #000000;
+  --font-color: #b8d5ae;
+  --font-dark-color: #000;
   --snake-color: green;
   --food-color: red;
   --playground-color: #b8d5ae;
   --border-color: #105210;
   --grid-size: 20;
 }
+
 *,
 *::after,
 *::before {
@@ -16,14 +18,21 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
   background: var(--bg-color);
   font-family: "VT323", monospace;
-  font-size: 28px;
+  font-size: 1.75rem; /*for user flexibility*/
+  color: var(--font-color);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased; /* font smoothing - It makes font clean and lighter, especially on macOS where font rendering can be bold by default. */
+  -moz-osx-font-smoothing: grayscale;
 }
+
 h3 {
-  color: rgb(184, 213, 174);
   font-weight: normal;
+  text-decoration: underline overline double 0.1px;
+  text-underline-offset: 0.4em;
 }
 
 main {
@@ -37,10 +46,9 @@ main {
 .score-panel {
   display: flex;
   justify-content: space-between;
-  width: 460px;
-  color: rgb(184, 213, 174);
-  margin-bottom: 10px;
-  margin-top: 40px;
+  max-width: 28rem; /*448px max screen*/
+  width: 100%;
+  margin: 1rem 0;
 }
 .game-board-grid {
   display: grid;
@@ -48,16 +56,19 @@ main {
   grid-template-rows: repeat(20, 1.25rem);
   background: rgb(184, 213, 174);
 }
+
 .board-container {
   border: 8px solid #b8d5ae;
   border-radius: 10px;
   box-shadow: inset 0 0 0 10px #b8d5ae;
   position: relative;
 }
+
 .board-border {
   border: 26px solid #105210;
   border-radius: 10px;
 }
+
 .starter-screen {
   position: absolute;
   top: 50%;
@@ -66,13 +77,14 @@ main {
   text-align: center;
   width: 70%;
 }
-/* .info {
+.info {
+  color: var(--font-dark-color);
 }
-.logo {
-} */
+
 .snake {
   border: 1px solid #000;
 }
+
 .food {
   border: 1px solid #000;
   background: var(--food-color);
