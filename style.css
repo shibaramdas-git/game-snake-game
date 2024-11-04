@@ -31,6 +31,7 @@ body {
 
 h3 {
   font-weight: normal;
+  font-size: 2.15rem;
   text-decoration: underline overline double 0.1px;
   text-underline-offset: 0.4em;
 }
@@ -40,33 +41,35 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .score-panel {
   display: flex;
   justify-content: space-between;
-  max-width: 28rem; /*448px max screen*/
   width: 100%;
+  max-width: 29.25rem;
   margin: 1rem 0;
 }
-.game-board-grid {
-  display: grid;
-  grid-template-columns: repeat(20, 1.25rem);
-  grid-template-rows: repeat(20, 1.25rem);
-  background: rgb(184, 213, 174);
-}
 
+/* Game board styles */
 .board-container {
-  border: 8px solid #b8d5ae;
-  border-radius: 10px;
-  box-shadow: inset 0 0 0 10px #b8d5ae;
   position: relative;
+  border: 0.3rem solid var(--playground-color);
+  border-radius: 0.625rem;
+  box-shadow: inset 0 0 0 0.625rem var(--playground-color);
 }
 
 .board-border {
-  border: 26px solid #105210;
-  border-radius: 10px;
+  border: 1.25rem solid var(--border-color);
+  border-radius: 0.625rem;
+}
+
+.game-board-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-size), 1.5rem);
+  grid-template-rows: repeat(var(--grid-size), 1.5rem);
+  background: rgb(184, 213, 174);
 }
 
 .starter-screen {
@@ -82,12 +85,12 @@ main {
 }
 
 .snake {
-  border: 1px solid #000;
+  background: center / contain url(./public/snake-skin.jpg);
+  border-radius: 20%;
 }
 
 .food {
-  border: 1px solid #000;
-  background: var(--food-color);
+  background: center / contain url(./public/frog-orange.png) no-repeat;
 }
 
 #highScore {
