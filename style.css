@@ -9,6 +9,7 @@
   --playground-color: #b8d5ae;
   --border-color: #105210;
   --grid-size: 20;
+  --cell-size: 1.5rem;
 }
 
 *,
@@ -47,8 +48,7 @@ main {
 .score-panel {
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  max-width: 29.25rem;
+  width: calc(var(--grid-size) * var(--cell-size));
   margin: 1rem 0;
 }
 
@@ -67,8 +67,8 @@ main {
 
 .game-board-grid {
   display: grid;
-  grid-template-columns: repeat(var(--grid-size), 1.5rem);
-  grid-template-rows: repeat(var(--grid-size), 1.5rem);
+  grid-template-columns: repeat(var(--grid-size), var(--cell-size));
+  grid-template-rows: repeat(var(--grid-size), var(--cell-size));
   background: rgb(184, 213, 174);
 }
 
@@ -80,10 +80,13 @@ main {
   text-align: center;
   width: 70%;
 }
-.info {
+.starter-screen .info {
   color: var(--font-dark-color);
 }
 
+.logo {
+  height: 200px;
+}
 .snake {
   background: center / contain url(./public/snake-skin.jpg);
   border-radius: 20%;
@@ -95,4 +98,16 @@ main {
 
 #highScore {
   display: none;
+}
+
+/* Responsive design */
+@media (max-width: 500px) {
+  :root {
+    --grid-size: 15;
+    --cell-size: 1.25rem;
+  }
+  .game-board-grid {
+    grid-template-columns: repeat(var(--grid-size), var(--cell-size));
+    grid-template-rows: repeat(var(--grid-size), var(--cell-size));
+  }
 }
