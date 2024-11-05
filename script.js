@@ -1,18 +1,27 @@
+// Constants
+const INITIAL_SPEED = 200;
+const MIN_SPEED = 120;
+const SPEED_INCREMENT = 6;
+const GRID_SIZE = getComputedStyle(document.documentElement).getPropertyValue(
+  "--grid-size"
+);
+
 // HTML elements
 const board = document.getElementById("game-board");
 const starterScreen = document.querySelector(".starter-screen");
-const scoreEle = document.querySelector("#score");
-const highScoreEle = document.querySelector("#highScore");
+const scoreDisplay = document.querySelector("#score");
+const highScoreDisplay = document.querySelector("#highScore");
 
 // Variables
-const gridSize = 20;
 let snake = [{ x: 10, y: 10 }];
 let food = generateFood();
 let direction = "right";
 let gameStarted = false;
-let gameSpeedDelay = 200;
+let gameSpeedDelay = INITIAL_SPEED;
 let gameInterval;
 let highScore = 0;
+
+document.addEventListener("keydown", handleKeyPress);
 
 // draww game map, snake, food
 function draw() {
@@ -51,8 +60,8 @@ function createChildElement(tag, className) {
   return element;
 }
 function generateFood() {
-  const x = Math.floor(Math.random() * gridSize) + 1;
-  const y = Math.floor(Math.random() * gridSize) + 1;
+  const x = Math.floor(Math.random() * GRID_SIZE) + 1;
+  const y = Math.floor(Math.random() * GRID_SIZE) + 1;
   return { x, y };
 }
 
@@ -80,8 +89,6 @@ function handleKeyPress(event) {
     }
   }
 }
-
-document.addEventListener("keydown", handleKeyPress);
 
 // Start the game
 function startGame() {
@@ -138,14 +145,8 @@ function move() {
 // Lets increase speed on every food
 function increaseSpeed(speed) {
   // console.log(speed);
-  if (speed > 150) {
-    speed -= 5;
-  } else if (gameSpeedDelay > 100) {
-    speed -= 3;
-  } else if (gameSpeedDelay > 50) {
-    speed -= 2;
-  } else if (gameSpeedDelay > 25) {
-    speed -= 1;
+  if (speed > MIN_SPEED) {
+    speed -= SPEED_INCREMENT;
   }
   return speed;
 }
@@ -154,8 +155,8 @@ function increaseSpeed(speed) {
 function checkCollision() {
   let head = snake[0];
   //Check for boundary
-  if (head.x < 1 || head.x > gridSize || head.y < 1 || head.y > gridSize) {
-    console.log("out");
+  if (head.x < 1 || head.x > GRID_SIZE || head.y < 1 || head.y > GRID_SIZE) {
+    console.log("out", "Grid size- ", GRID_SIZE);
     resetGame();
   }
 
@@ -174,7 +175,7 @@ function resetGame() {
   snake = [{ x: 10, y: 10 }];
   food = generateFood();
   direction = "right";
-  gameSpeedDelay = 200;
+  gameSpeedDelay = INITIAL_SPEED;
   updateScore();
 }
 // Opposite of startGame();
@@ -187,15 +188,17 @@ function stopGame() {
 
 function updateScore() {
   let currentScore = snake.length - 1;
-  scoreEle.textContent = `Score: ${currentScore.toString().padStart(3, "0")}`;
+  scoreDisplay.textContent = `Score: ${currentScore
+    .toString()
+    .padStart(3, "0")}`;
 }
 function updateHighScore() {
   let currentScore = snake.length - 1;
   if (currentScore > highScore) {
     highScore = currentScore;
-    highScoreEle.textContent = `High Score: ${highScore
+    highScoreDisplay.textContent = `High Score: ${highScore
       .toString()
       .padStart(3, "0")}`;
   }
-  highScoreEle.style.display = "block";
+  highScoreDisplay.style.display = "block";
 }
