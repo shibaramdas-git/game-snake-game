@@ -22,50 +22,64 @@ let gameInterval;
 let highScore = 0;
 
 document.addEventListener("keydown", handleKeyPress);
+// ==============================================================
+// Initialize and start game()
+// ==============================================================
+function startGame() {
+  gameStarted = true;
+  starterScreen.style.display = "none";
+  gameInterval = setInterval(() => {
+    draw();
+    move();
+    checkCollision();
+  }, gameSpeedDelay);
+}
 
-// draww game map, snake, food
+// Opposite of startGame();
+function stopGame() {
+  gameStarted = false;
+  starterScreen.style.display = "block";
+  clearInterval(gameInterval);
+  board.innerHTML = ""; //Removes snake & food after game over
+}
+
+function resetGame() {
+  updateHighScore();
+  stopGame();
+  snake = [{ x: 10, y: 10 }];
+  food = generateFood();
+  direction = "right";
+  gameSpeedDelay = INITIAL_SPEED;
+  updateScore();
+}
+// ==============================================================
+// draw functions
+// ==============================================================
 function draw() {
   board.innerHTML = "";
   drawSnake();
   drawFood();
   updateScore();
 }
-// draw snake
+
 function drawSnake() {
   snake.forEach((segment) => {
-    //create snake element
     const snakeElement = createChildElement("div", "snake");
     //Set position to center every time
     setPosition(snakeElement, segment);
     board.appendChild(snakeElement);
   });
 }
-// draw food
+
 function drawFood() {
   const foodElement = createChildElement("div", "food");
   setPosition(foodElement, food);
   board.appendChild(foodElement);
 }
-// ======================================
-// Helper functions
-// ======================================
 
-function setPosition(element, position) {
-  element.style.gridColumn = position.x;
-  element.style.gridRow = position.y;
-}
-function createChildElement(tag, className) {
-  const element = document.createElement(tag);
-  element.className = className;
-  return element;
-}
-function generateFood() {
-  const x = Math.floor(Math.random() * GRID_SIZE) + 1;
-  const y = Math.floor(Math.random() * GRID_SIZE) + 1;
-  return { x, y };
-}
-
-// Handle keypress event (MAIN FUNCTION)
+// ==============================================================
+// Movement and direction handling
+// ==============================================================
 function handleKeyPress(event) {
   if (
     (gameStarted === false && event.code == "Space") ||
@@ -88,17 +102,6 @@ function handleKeyPress(event) {
         break;
     }
   }
-}
-
-// Start the game
-function startGame() {
-  gameStarted = true;
-  starterScreen.style.display = "none";
-  gameInterval = setInterval(() => {
-    draw();
-    move();
-    checkCollision();
-  }, gameSpeedDelay);
 }
 
 // Move the snake (MAIN FUNCTION)
@@ -150,8 +153,29 @@ function increaseSpeed(speed) {
   }
   return speed;
 }
+// ==============================================================
+// Helper functions
+// ==============================================================
 
+function setPosition(element, position) {
+  element.style.gridColumn = position.x;
+  element.style.gridRow = position.y;
+}
+function createChildElement(tag, className) {
+  const element = document.createElement(tag);
+  element.className = className;
+  return element;
+}
+function generateFood() {
+  const x = Math.floor(Math.random() * GRID_SIZE) + 1;
+  const y = Math.floor(Math.random() * GRID_SIZE) + 1;
+  return { x, y };
+}
+
+// ==============================================================
 // Check collision with walls and snakes body itself
+// ==============================================================
+
 function checkCollision() {
   let head = snake[0];
   //Check for boundary
@@ -169,22 +193,9 @@ function checkCollision() {
   }
 }
 
-function resetGame() {
-  updateHighScore();
-  stopGame();
-  snake = [{ x: 10, y: 10 }];
-  food = generateFood();
-  direction = "right";
-  gameSpeedDelay = INITIAL_SPEED;
-  updateScore();
-}
-// Opposite of startGame();
-function stopGame() {
-  gameStarted = false;
-  starterScreen.style.display = "block";
-  clearInterval(gameInterval);
-  board.innerHTML = ""; //Removes snake & food after game over
-}
+// ==============================================================
+// Score Display
+// ==============================================================
 
 function updateScore() {
   let currentScore = snake.length - 1;
