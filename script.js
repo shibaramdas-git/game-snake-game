@@ -17,7 +17,7 @@ let snake = [{ x: 10, y: 10 }];
 let food = generateFood();
 let direction = "right";
 let gameStarted = false;
-let gameSpeedDelay = INITIAL_SPEED;
+let gameSpeed = INITIAL_SPEED;
 let gameInterval;
 let highScore = 0;
 
@@ -28,29 +28,32 @@ document.addEventListener("keydown", handleKeyPress);
 function startGame() {
   gameStarted = true;
   starterScreen.style.display = "none";
-  gameInterval = setInterval(() => {
-    draw();
-    move();
-    checkCollision();
-  }, gameSpeedDelay);
+  gameInterval = setInterval(gameLoop, gameSpeed);
+  // console.log(`game speed - ${gameSpeed} , direction - ${direction}`);
 }
 
 // Opposite of startGame();
 function stopGame() {
   gameStarted = false;
-  starterScreen.style.display = "block";
   clearInterval(gameInterval);
-  board.innerHTML = ""; //Removes snake & food after game over
+  starterScreen.style.display = "block";
+  board.innerHTML = ""; //Removes snake & food when game is over
 }
 
 function resetGame() {
-  updateHighScore();
-  stopGame();
   snake = [{ x: 10, y: 10 }];
   food = generateFood();
   direction = "right";
-  gameSpeedDelay = INITIAL_SPEED;
+  gameSpeed = INITIAL_SPEED;
+  stopGame();
   updateScore();
+  updateHighScore();
+}
+
+function gameLoop() {
+  draw();
+  move();
+  checkCollision();
 }
 // ==============================================================
 // draw functions
@@ -81,26 +84,24 @@ function drawFood() {
 // Movement and direction handling
 // ==============================================================
 function handleKeyPress(event) {
-  if (
-    (gameStarted === false && event.code == "Space") ||
-    (gameStarted === false && event.key === " ")
-  ) {
+  if (!gameStarted && (event.code == "Space" || event.key === " ")) {
     startGame();
-  } else {
-    switch (event.key) {
-      case "ArrowUp":
-        direction = "up";
-        break;
-      case "ArrowDown":
-        direction = "down";
-        break;
-      case "ArrowRight":
-        direction = "right";
-        break;
-      case "ArrowLeft":
-        direction = "left";
-        break;
-    }
+  }
+}
+function getNewDirection(key) {
+  switch (key) {
+    case "ArrowUp":
+      direction = "up";
+      break;
+    case "ArrowDown":
+      direction = "down";
+      break;
+    case "ArrowRight":
+      direction = "right";
+      break;
+    case "ArrowLeft":
+      direction = "left";
+      break;
   }
 }
 
@@ -128,13 +129,13 @@ function move() {
 
   if (head.x === food.x && head.y === food.y) {
     food = generateFood();
-    gameSpeedDelay = increaseSpeed(gameSpeedDelay);
+    gameSpeed = increaseSpeed(gameSpeed);
     clearInterval(gameInterval); //To start new interval with new speed
     gameInterval = setInterval(() => {
       draw();
       move();
       checkCollision();
-    }, gameSpeedDelay);
+    }, gameSpeed);
   } else {
     snake.pop();
   }
@@ -150,6 +151,7 @@ function increaseSpeed(speed) {
   // console.log(speed);
   if (speed > MIN_SPEED) {
     speed -= SPEED_INCREMENT;
+    console.log(speed);
   }
   return speed;
 }
