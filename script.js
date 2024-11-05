@@ -87,22 +87,27 @@ function handleKeyPress(event) {
   if (!gameStarted && (event.code == "Space" || event.key === " ")) {
     startGame();
   }
+  const newDirection = getNewDirection(event.key);
+  if (newDirection && !isOppositeDirection(newDirection)) {
+    direction = newDirection;
+  }
 }
 function getNewDirection(key) {
   switch (key) {
     case "ArrowUp":
-      direction = "up";
-      break;
+      return "up";
     case "ArrowDown":
-      direction = "down";
-      break;
+      return "down";
     case "ArrowRight":
-      direction = "right";
-      break;
+      return "right";
     case "ArrowLeft":
-      direction = "left";
-      break;
+      return "left";
   }
+}
+
+function isOppositeDirection(newDirection) {
+  const opposite = { up: "down", down: "up", right: "left", left: "right" };
+  return opposite[direction] === newDirection;
 }
 
 // Move the snake (MAIN FUNCTION)
